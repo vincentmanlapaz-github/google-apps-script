@@ -1,2 +1,5 @@
 # VS Code Workspace
 *.code-workspace
+
+# clasp.json Files
+*/.clasp.json
