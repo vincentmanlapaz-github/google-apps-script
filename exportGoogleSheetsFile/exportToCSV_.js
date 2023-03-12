@@ -5,7 +5,7 @@
  * @param  {DriveApp.Folder}             targetFolder    The Google Drive Folder to save export.
  * @param  {string}                      [delimiter=","] An optional parameter to apply custom delimiter.
  */
-function exportTempToCSV_(sourceGSheet, sheetName, targetFolder, delimiter) {
+function exportToCSV_(sourceGSheet, sheetName, targetFolder, delimiter) {
 
     delimiter = delimiter || ",";
 

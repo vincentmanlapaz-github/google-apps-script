@@ -5,7 +5,7 @@
  * @param  {DriveApp.Folder}             targetFolder     The Google Drive Folder to save export in.
  * @param  {string}                      [delimiter="\t"] An optional parameter to apply custom delimiter.
  */
-function exportTempToTSV_(sourceGSheet, sheetName, targetFolder, delimiter) {
+function exportToTSV_(sourceGSheet, sheetName, targetFolder, delimiter) {
 
     delimiter = delimiter || "\t";
 

@@ -30,10 +30,10 @@ function exportGoogleSheetsFile(sheetId, sheetName, targetFolderId, toFormat="cs
         let exportedFileUrl;
         switch ( toFormat.toLowerCase() ) {
             case "csv":
-                exportedFileUrl = exportTempToCSV_(gsheetsFile, sheetName, driveFolder, delimiter);
+                exportedFileUrl = exportToCSV_(gsheetsFile, sheetName, driveFolder, delimiter);
                 break;
             case "tsv":
-                exportedFileUrl = exportTempToTSV_(gsheetsFile, sheetName, driveFolder, delimiter);
+                exportedFileUrl = exportToTSV_(gsheetsFile, sheetName, driveFolder, delimiter);
                 break;
             default:
                 throw `Input file format '${toFormat}' is not supported.`;
