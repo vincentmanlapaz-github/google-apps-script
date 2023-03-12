@@ -9,7 +9,7 @@
 function bulkRenameFiles(driveLocationId, filenameToReplace, replaceWith="", undo=false){
 
     driveLocationId = driveLocationId || "";
-    if ( driveLocationId == "") {
+    if ( driveLocationId == "" ) {
         throw "ERROR: Parameter 'driveLocationId' cannot be empty.";
     };
     filenameToReplace = filenameToReplace || "";
