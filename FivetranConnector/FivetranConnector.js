@@ -180,4 +180,22 @@ class FivetranConnector {
         let groups = this.queryApiCursors_(apiUrl, filters, exitOnTrue);
         return groups;
     }
+
+    /**
+     * Returns a list of all users within your Fivetran account.
+     * @method getUsers
+     * @params {Array.<Object>} [filters=[{}]]    - An optional parameter to check if return item matches
+     *                                              a set of conditions (e.g., `email` is "test@xyz.com").
+     *                                              If no argument is passed, returns all users in account.
+     * @params {boolean}        [exitOnTrue=true] - An optional parameter to end API call once an item has
+     *                                              matched any of the provided filter conditions.
+     *                                              If no argument is passed, defaults to `true`.
+     * @see {@link https://fivetran.com/docs/rest-api/users#listallusers | Fivetran REST API, User Management}
+     * @returns {Array} A collection of items matching filters, if any.
+     */
+    getUsers(filters=[{}], exitOnTrue=true) {
+        let apiUrl = `${this.baseUrl}/users`;
+        let users = this.queryApiCursors_(apiUrl, filters, exitOnTrue);
+        return users;
+    }
 }
