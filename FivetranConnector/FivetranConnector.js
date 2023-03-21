@@ -182,6 +182,24 @@ class FivetranConnector {
     }
 
     /**
+     * Returns a list of all teams within your Fivetran account.
+     * @method getTeams
+     * @params {Array.<Object>} [filters=[{}]]    - An optional parameter to check if return item matches
+     *                                              a set of conditions (e.g., `name` is "Dev Team").
+     *                                              If no argument is passed, returns all teams in account.
+     * @params {boolean}        [exitOnTrue=true] - An optional parameter to end API call once an item has
+     *                                              matched any of the provided filter conditions.
+     *                                              If no argument is passed, defaults to `true`.
+     * @see {@link https://fivetran.com/docs/rest-api/teams#listallteams | Fivetran REST API, Team Management}
+     * @returns {Array} A collection of items matching filters, if any.
+     */
+    getTeams(filters=[{}], exitOnTrue=true) {
+        let apiUrl = `${this.baseUrl}/teams`;
+        let teams = this.queryApiCursors_(apiUrl, filters, exitOnTrue);
+        return teams;
+    }
+
+    /**
      * Returns a list of all users within your Fivetran account.
      * @method getUsers
      * @params {Array.<Object>} [filters=[{}]]    - An optional parameter to check if return item matches
