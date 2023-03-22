@@ -164,6 +164,54 @@ class FivetranConnector {
     }
 
     /**
+     * Returns a list of information about all connectors within a group in your Fivetran account.
+     * @method getConnectorsInGroup
+     * @params {Array.<Object>} [filters=[{}]]    - An optional parameter to check if return item matches
+     *                                              a set of conditions (e.g., `service` is "email").
+     *                                              If no argument is passed, returns all groups in account.
+     * @params {boolean}        [exitOnTrue=true] - An optional parameter to end API call once an item has
+     *                                              matched any of the provided filter conditions.
+     *                                              If no argument is passed, defaults to `true`.
+     * @see {@link https://fivetran.com/docs/rest-api/groups#listallconnectorswithinagroup | Fivetran REST API, Group Management}
+     * @returns {Array} A collection of items matching filters, if any.
+     */
+    getConnectorsInGroup(groupId, filters=[{}], exitOnTrue=true) {
+        let apiUrl = `${this.baseUrl}/groups/${groupId}/connectors`;
+        let connectors = this.queryApiCursors_(apiUrl, filters, exitOnTrue);
+        return connectors;
+    }
+
+    /**
+     * Returns a list of information about all connectors in your Fivetran account.
+     * @method getConnectors
+     * @params {Array.<Object>} [filters=[{}]]    - An optional parameter to check if return item matches
+     *                                              a set of conditions (e.g., `service` is "email").
+     *                                              If no argument is passed, returns all groups in account.
+     * @params {boolean}        [exitOnTrue=true] - An optional parameter to end API call once an item has
+     *                                              matched any of the provided filter conditions.
+     *                                              If no argument is passed, defaults to `true`.
+     * @see {@link https://fivetran.com/docs/rest-api/groups#listallconnectorswithinagroup | Fivetran REST API, Group Management}
+     * @returns {Array} A collection of items matching filters, if any.
+     */
+    getConnectors(filters=[{}], exitOnTrue=true) {
+        let groups = this.getGroups();
+        let connectors = [];
+
+        getAllConnectors:
+        while ( groups.length > 0 ) {
+            let group = groups.pop();
+            try {
+                let groupId = group.id;
+                let connectorsInGroup = this.getConnectorsInGroup(groupId, filters, exitOnTrue);
+                connectors.push.apply(connectors, connectorsInGroup);
+            } catch (e) {
+                break getAllConnectors;
+            };
+        };
+        return connectors;
+    }
+
+    /**
      * Returns a list of all groups within your Fivetran account.
      * @method getGroups
      * @params {Array.<Object>} [filters=[{}]]    - An optional parameter to check if return item matches
