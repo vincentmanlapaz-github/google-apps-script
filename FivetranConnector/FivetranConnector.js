@@ -150,7 +150,7 @@ class FivetranConnector {
                 };
             };
             try {
-                let cursorUrl = `${url}?cursor=${apiCursor}`;
+                let cursorUrl = `${url}?cursor=${apiCursor}&limit=1000`;
                 queryResponse = this.makeCallToApi_(cursorUrl, params);
                 responseContext = JSON.parse(queryResponse.getContentText());
                 apiCursor = responseContext.data.next_cursor;
