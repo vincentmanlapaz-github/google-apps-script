@@ -32,15 +32,17 @@ class FivetranConnector {
     /**
      * Performs a call to the API service and generates a success or error Logger message.
      * @method makeCallToApi_
-     * @params {string} url        - The URL to make an API call to.
-     * @params {Object} httpParams - Contains the method, headers, and payload, if required.
+     * @params {string}  url                      - The URL to make an API call to.
+     * @params {Object}  httpParams               - Contains the method, headers, and payload, if required.
+     * @params {boolean} [muteHttpResponse=false] - An optional parameter to mute HttpResponse messages.
+     *                                              If no argument is passed, defaults to `false`.
      * @returns {UrlFetchApp.HTTPResponse}
      */
-    makeCallToApi_(url, httpParams) {
+    makeCallToApi_(url, httpParams, muteHttpResponse=false) {
         let httpResponse = UrlFetchApp.fetch(url, httpParams);
         let httpResponseCode = httpResponse.getResponseCode();
 
-        if ( httpResponseCode.toString().match(/2.*/) ) {
+        if ( httpResponseCode.toString().match(/2.*/) && !muteHttpResponse ) {
             let jsonResponse = JSON.parse(httpResponse);
             if ( jsonResponse.message === null || jsonResponse.message === undefined ) {
                 Logger.log(`ResponseSuccess: Response Code=${httpResponseCode.toString()}, HTTP request success`);
@@ -151,7 +153,7 @@ class FivetranConnector {
             };
             try {
                 let cursorUrl = `${url}?cursor=${apiCursor}&limit=1000`;
-                queryResponse = this.makeCallToApi_(cursorUrl, params);
+                queryResponse = this.makeCallToApi_(cursorUrl, params, true);
                 responseContext = JSON.parse(queryResponse.getContentText());
                 apiCursor = responseContext.data.next_cursor;
                 pageTurns += 1;
