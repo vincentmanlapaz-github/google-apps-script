@@ -133,7 +133,7 @@ class FivetranConnector {
         cursorPaging:
         while ( apiCursor !== null || apiCursor !== undefined ) {
             let items = Object.values(responseContext.data.items);
-            if ( filterConditions === "" ) {
+            if ( isFilterRequired ) {
                 apiItems.push.apply(apiItems, items);
             } else {
                 itemLoop:
