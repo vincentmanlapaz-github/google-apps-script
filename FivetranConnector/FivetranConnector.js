@@ -22,7 +22,7 @@ class FivetranConnector {
     /**
      * Generates the `Authorization` header to connect to Fivetran REST API.
      * @method authenticator_
-     * @returns {Object} The `Authorization` header when making API calls.
+     * @returns {Object} The `Authorization` header to make API calls.
      */
     authenticator_() {
         const base64AuthKey = Utilities.base64Encode(`${this.apiKey}:${this.apiSecret}`);
@@ -60,7 +60,8 @@ class FivetranConnector {
      * @method buildHttpParams_
      * @params {string} httpMethod       - The HTTP method to use. Must be one of: `get`, `patch`, `delete`, or `post`.
      * @params {Object} [httpPayload={}] - If required, the parameter containing the payload to send to API service.
-     * @returns {UrlFetchApp.HTTPResponse} The HTTP response to the API call.
+     * @see {@link https://developers.google.com/apps-script/reference/url-fetch/url-fetch-app#advanced-parameters}
+     * @returns {Object} The optional JavaScript object specifying advanced parameters.
      */
     buildHttpParams_(httpMethod, httpPayload={}) {
         let httpParams = {
@@ -83,7 +84,7 @@ class FivetranConnector {
      *                                       For a list of acceptable of Object keys, refer to the
      *                                       Fivetran REST API documentation.
      * @see {@link https://fivetran.com/docs/rest-api | Fivetran REST API Docs}
-     * @returns {String}
+     * @returns {String} The joined filter conditions to use for `eval` function.
      */
     buildFilterConditions_(queryTexts) {
         let filters = [];
@@ -117,8 +118,8 @@ class FivetranConnector {
      * @params {boolean}        [exitOnTrue=true] - An optional parameter to stop querying the HTTP
      *                                              responses once desired item has been located.
      *                                              If no argument is passed, defaults to `true`.
-     * @see {@link https://fivetran.com/docs/rest-api | Fivetran REST API Docs}
-     * @returns {Array} A collection of items matching filters, if any.
+     * @see {@link https://fivetran.com/docs/rest-api/pagination | Fivetran REST API Pagination}
+     * @returns {Array.<Object>} A collection of items matching filters, if any.
      */
     queryApiCursors_(url, queryTexts=[{}], exitOnTrue=true) {
         let params = this.buildHttpParams_("get");
@@ -175,7 +176,7 @@ class FivetranConnector {
      *                                              matched any of the provided filter conditions.
      *                                              If no argument is passed, defaults to `true`.
      * @see {@link https://fivetran.com/docs/rest-api/groups#listallconnectorswithinagroup | Fivetran REST API, Group Management}
-     * @returns {Array} A collection of items matching filters, if any.
+     * @returns {Array.<Object>} A collection of items matching filters, if any.
      */
     getConnectorsInGroup(groupId, filters=[{}], exitOnTrue=true) {
         let apiUrl = `${this.baseUrl}/groups/${groupId}/connectors`;
@@ -193,7 +194,7 @@ class FivetranConnector {
      *                                              matched any of the provided filter conditions.
      *                                              If no argument is passed, defaults to `true`.
      * @see {@link https://fivetran.com/docs/rest-api/groups#listallconnectorswithinagroup | Fivetran REST API, Group Management}
-     * @returns {Array} A collection of items matching filters, if any.
+     * @returns {Array.<Object>} A collection of items matching filters, if any.
      */
     getConnectors(filters=[{}], exitOnTrue=true) {
         let groups = this.getGroups();
@@ -223,7 +224,7 @@ class FivetranConnector {
      *                                              matched any of the provided filter conditions.
      *                                              If no argument is passed, defaults to `true`.
      * @see {@link https://fivetran.com/docs/rest-api/groups#listallgroups | Fivetran REST API, Group Management}
-     * @returns {Array} A collection of items matching filters, if any.
+     * @returns {Array.<Object>} A collection of items matching filters, if any.
      */
     getGroups(filters=[{}], exitOnTrue=true) {
         let apiUrl = `${this.baseUrl}/groups`;
@@ -241,7 +242,7 @@ class FivetranConnector {
      *                                              matched any of the provided filter conditions.
      *                                              If no argument is passed, defaults to `true`.
      * @see {@link https://fivetran.com/docs/rest-api/teams#listallteams | Fivetran REST API, Team Management}
-     * @returns {Array} A collection of items matching filters, if any.
+     * @returns {Array.<Object>} A collection of items matching filters, if any.
      */
     getTeams(filters=[{}], exitOnTrue=true) {
         let apiUrl = `${this.baseUrl}/teams`;
@@ -259,7 +260,7 @@ class FivetranConnector {
      *                                              matched any of the provided filter conditions.
      *                                              If no argument is passed, defaults to `true`.
      * @see {@link https://fivetran.com/docs/rest-api/users#listallusers | Fivetran REST API, User Management}
-     * @returns {Array} A collection of items matching filters, if any.
+     * @returns {Array.<Object>} A collection of items matching filters, if any.
      */
     getUsers(filters=[{}], exitOnTrue=true) {
         let apiUrl = `${this.baseUrl}/users`;
