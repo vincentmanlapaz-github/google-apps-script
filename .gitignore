@@ -3,3 +3,11 @@
 
 # clasp.json Files
 */.clasp.json
+
+# Reference Codes Files
+*/referenceCodes.js
+*/referenceCodes.gs
+
+# Test Files
+*/tests.js
+*/tests.gs
