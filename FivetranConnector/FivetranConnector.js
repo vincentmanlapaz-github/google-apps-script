@@ -267,4 +267,24 @@ class FivetranConnector {
         let users = this.queryApiCursors_(apiUrl, filters, exitOnTrue);
         return users;
     }
+
+    /**
+     * Pauses a Fivetran connector.
+     * @method pauseConnector
+     * @param {string} connectorId - The `connector_id` of the schema to pause.
+     */
+    pauseConnector(connectorId) {
+        let apiUrl = `${this.baseUrl}/connectors/${connectorId}`;
+        let payload = {
+            "paused": true
+        };
+        let params = this.buildHttpParams_("patch", payload);
+
+        try {
+            let queryResponse = this.makeCallToApi_(apiUrl, params);
+            Logger.log(`pauseConnector: Pause Success, connector_id='${connectorId}'`);
+        } catch (e) {
+            throw `pauseConnector: Pause Failed, connector_id='${connectorId}'`;
+        };
+    }
 }
