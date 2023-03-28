@@ -287,4 +287,29 @@ class FivetranConnector {
             throw `pauseConnector: Pause Failed, connector_id='${connectorId}'`;
         };
     }
+
+    /**
+     * Triggers a data sync for an existing connector without waiting for the next scheduled sync.
+     * @method syncConnector
+     * @param {string}  connectorId                 - The `connector_id` of the schema to sync.
+     * @param {boolean} [overrideCurrentSync=false] - If set to `true` and the connector is currently syncing,
+     *                                                it will stop the sync and re-run it. If set to `false`,
+     *                                                the connector will sync only if it isn't currently syncing.
+     *                                                If no argument is passed, defaults to `false`.
+     * @see {@link https://fivetran.com/docs/rest-api/connectors#syncconnectordata | Fivetran REST API, Connector Management}
+     */
+    syncConnector(connectorId, overrideCurrentSync=false) {
+        let apiUrl = `${this.baseUrl}/connectors/${connectorId}/sync`;
+        let payload = {
+            "force": overrideCurrentSync
+        };
+        let params = this.buildHttpParams_("post", payload);
+
+        try {
+            let queryResponse = this.makeCallToApi_(apiUrl, params);
+            Logger.log(`syncConnector: Sync Success, connector_id='${connectorId}'`);
+        } catch (e) {
+            throw `syncConnector: Sync Failed, connector_id='${connectorId}'`;
+        };
+    }
 }
