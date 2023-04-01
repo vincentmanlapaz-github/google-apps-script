@@ -289,6 +289,32 @@ class FivetranConnector {
     }
 
     /**
+     * Runs the setup tests for an existing connector within your Fivetran account.
+     * @method runConnectorSetupTest
+     * @param {string}  connectorId               - The `connector_id` of the schema to run setup test on.
+     * @param {boolean} [trustCertificates=false] - Specifies whether we should trust the certificate automatically.
+     *                                              Applicable only for database connectors. The default value is FALSE.
+     * @param {boolean} [trustFingerPrints=false] - Specifies whether we should trust the SSH fingerprint automatically.
+     *                                              Applicable only for database connectors. The default value is FALSE.
+     * @see {@link https://fivetran.com/docs/rest-api/connectors#runconnectorsetuptests | Fivetran REST API, Connector Management}
+     */
+    runConnectorSetupTest(connectorId, trustCertificates=false, trustFingerPrints=false) {
+        let apiUrl = `${this.baseUrl}/connectors/${connectorId}/test`;
+        let payload = {
+            "trust_certificates": trustCertificates,
+            "trust_fingerprints": trustFingerPrints
+        };
+        let params = this.buildHttpParams_("post", payload);
+
+        try {
+            let queryResponse = this.makeCallToApi_(apiUrl, params);
+            Logger.log(`runConnectorSetupTest: Setup Test Success, connector_id='${connectorId}'`);
+        } catch (e) {
+            throw `runConnectorSetupTest: Setup Test Failed, connector_id='${connectorId}'`;
+        };
+    }
+
+    /**
      * Triggers a data sync for an existing connector without waiting for the next scheduled sync.
      * @method syncConnector
      * @param {string}  connectorId                 - The `connector_id` of the schema to sync.
