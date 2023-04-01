@@ -42,12 +42,14 @@ class FivetranConnector {
         let httpResponse = UrlFetchApp.fetch(url, httpParams);
         let httpResponseCode = httpResponse.getResponseCode();
 
-        if ( httpResponseCode.toString().match(/2.*/) && !muteHttpResponse ) {
+        if ( httpResponseCode.toString().match(/2.*/) ) {
             let jsonResponse = JSON.parse(httpResponse);
-            if ( jsonResponse.message === null || jsonResponse.message === undefined ) {
-                Logger.log(`ResponseSuccess: Response Code=${httpResponseCode.toString()}, HTTP request success`);
-            } else {
-                Logger.log(`ResponseSuccess: Response Code=${httpResponseCode.toString()}, ${jsonResponse.message}`);
+            if ( !muteHttpResponse ) {
+                if ( jsonResponse.message === null || jsonResponse.message === undefined ) {
+                    Logger.log(`ResponseSuccess: Response Code=${httpResponseCode.toString()}, HTTP request success`);
+                } else {
+                    Logger.log(`ResponseSuccess: Response Code=${httpResponseCode.toString()}, ${jsonResponse.message}`);
+                };
             };
             return httpResponse;
         } else {
