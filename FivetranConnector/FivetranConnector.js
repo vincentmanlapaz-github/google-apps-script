@@ -317,6 +317,38 @@ class FivetranConnector {
     }
 
     /**
+     * Changes the `schedule_type` of an existing connector within your Fivetran account.
+     * @method updateConnectorScheduleType
+     * @param {string} connectorId           - The `connector_id` of the schema to update.
+     * @param {string} [scheduleType="auto"] - Defines the connector sync scheduling type.
+     *                                         Supported values: `auto` and `manual`.
+     *                                         If no argument is passed, defaults to `auto`.
+     * @see {@link https://fivetran.com/docs/rest-api/connectors#payloadparameters | Fivetran REST API, Connector Management}
+     */
+    updateConnectorScheduleType(connectorId, scheduleType="auto") {
+        const scheduleTypes = ["auto", "manual"];
+        try {
+            if ( !scheduleTypes.includes( scheduleType.toLowerCase() ) ) {
+                throw new Error ("INVALID_SCHEDULE_TYPE");
+            };
+            let apiUrl = `${this.baseUrl}/connectors/${connectorId}`;
+            let payload = {
+                "schedule_type": scheduleType.toLowerCase()
+            };
+            let params = this.buildHttpParams_("patch", payload);
+            let queryResponse = this.makeCallToApi_(apiUrl, params);
+            Logger.log(`updateConnectorScheduleType: Update Success, connector_id='${connectorId}'`);
+        } catch ( error ) {
+            switch ( error.message ) {
+                case "INVALID_SCHEDULE_TYPE":
+                    throw `updateConnectorScheduleType: Update Failed, 'scheduleType' must be 'auto' or 'manual'`;
+                default:
+                    throw `updateConnectorScheduleType: Update Failed, connector_id='${connectorId}'`;
+            };
+        };
+    }
+
+    /**
      * Triggers a data sync for an existing connector without waiting for the next scheduled sync.
      * @method syncConnector
      * @param {string}  connectorId                 - The `connector_id` of the schema to sync.
