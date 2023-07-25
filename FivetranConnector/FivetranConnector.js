@@ -93,8 +93,8 @@ class FivetranConnector {
         let doApplyFilter = false;
         let filtersString = "";
         buildFilters:
-        while ( queryTexts.length > 0 ) {
-            let filterQuery = queryTexts.pop();
+        for ( let i = 0 ; i < queryTexts.length ; i++ ) {
+            let filterQuery = queryTexts[i];
             if ( Object.keys(filterQuery).length > 0 ) {
                 doApplyFilter = true;
                 let filterCondition = [];
